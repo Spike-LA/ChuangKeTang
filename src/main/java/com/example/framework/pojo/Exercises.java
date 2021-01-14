@@ -2,10 +2,7 @@ package com.example.framework.pojo;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -13,7 +10,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Setter
 @Getter
-public class Exercise {
+@ToString
+public class Exercises {
     @TableField(fill = FieldFill.INSERT)
     private String uuid;
     private String exercise_content;
@@ -22,7 +20,7 @@ public class Exercise {
     private String answer;
     private String section_id;
     private String create_by;
-    private String status;
     @TableField(fill = FieldFill.INSERT)
     private Date create_time;
+    private String status;
 }

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@MapperScan("com.tang.bill.mapper")
+@MapperScan("com.example.framework.mapper")
 @EnableTransactionManagement  // 自动管理事务
 @Configuration  // 代表这是一个配置类
 public class MybatisPlusConfig {

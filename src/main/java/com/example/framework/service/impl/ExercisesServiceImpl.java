@@ -2,7 +2,7 @@ package com.example.framework.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.framework.mapper.ExerciseMapper;
-import com.example.framework.pojo.Exercise;
+import com.example.framework.pojo.Exercises;
 import com.example.framework.service.ExercisesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service("ExercisesService")
-public class ExercisesServiceImpl extends ServiceImpl<ExerciseMapper, Exercise> implements ExercisesService {
+public class ExercisesServiceImpl extends ServiceImpl<ExerciseMapper, Exercises> implements ExercisesService {
 
     @Autowired
     ExerciseMapper exerciseMapper;
@@ -21,7 +21,7 @@ public class ExercisesServiceImpl extends ServiceImpl<ExerciseMapper, Exercise> 
     @Transactional
     public int addExercises(String exercise_content, String exercise_type_id, String options, String answer, String section_id, String create_by){
 
-        Exercise exercise = new Exercise();
+        Exercises exercise = new Exercises();
 
         exercise.setExercise_content(exercise_content);
         exercise.setExercise_type_id(exercise_type_id);

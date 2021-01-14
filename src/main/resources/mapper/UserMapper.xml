@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.framework.mapper.UserMapper">
+    <select id="retrieveDependAccount" resultType="map">
+        SELECT * FROM user where account=#{account}
+    </select>
+    <select id="retrieveDependUuid" resultType="map">
+        SELECT * FROM user where uuid=#{uuid}
+    </select>
+</mapper>

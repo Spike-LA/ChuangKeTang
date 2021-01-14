@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.framework.mapper.CourseMapper">
-    <select id="textCourse" resultType="map">
-        SELECT * FROM course where create_by=#{user_id}
+    <select id="getAllCreatedCourse" resultType="map">
+        SELECT uuid as course_id,course_name,user_name
+        FROM (SELECT course.`status`,course_name,user_name,course.uuid,create_by,`user`.uuid as uid
+        FROM course
+        INNER JOIN `user` ON `user`.uuid=create_by) AS a WHERE `status`=1 and uid=#{user_id}
     </select>
-
+    <select id="getCreatedCourseDependName" resultType="map">
+        SELECT *
+        FROM (SELECT course.`status`,course_name,user_name,course.uuid,create_by,`user`.uuid as uid
+        FROM course
+        INNER JOIN `user` ON `user`.uuid=create_by) AS a WHERE `status`=1 and course_name=#{course_name} and uid=#{user_id}
+    </select>
 </mapper>

@@ -2,10 +2,7 @@ package com.example.framework.pojo;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -13,14 +10,16 @@ import java.util.Date;
 @NoArgsConstructor
 @Setter
 @Getter
+@ToString
 public class User {
-    @TableField(fill = FieldFill.INSERT)
+    @TableField(fill= FieldFill.INSERT)
     private String uuid;
     private String user_name;
     private String account;
     private String password;
     private String role_id;
-    private String status;
-    @TableField(fill = FieldFill.INSERT)
+    @TableField(fill= FieldFill.INSERT)
     private Date create_time;
+    private String status; //1为登录状态,0为离线状态
+
 }

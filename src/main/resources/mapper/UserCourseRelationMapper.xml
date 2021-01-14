@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.framework.mapper.UserCourseRelationMapper">
+    <select id="retrieveSelectedCourseDependUserid" resultType="map">
+        SELECT * FROM (SELECT user_course_relation.status,course_name,course_id,user_id,user_name,user_course_relation.create_time FROM course
+        INNER JOIN user_course_relation on course.uuid=course_id
+        INNER JOIN `user`on user_id=user.uuid) as A WHERE user_id=#{user_id} and status=1
+    </select>
+    <select id="judgeCourseIsSelectedDependUseridCourseid" resultType="map">
+        SELECT * FROM user_course_relation WHERE user_id=#{user_id} and course_id=#{course_id} and status=1
+    </select>
+    <select id="retrieveAimedSelectedCourseDependUseridCoursename" resultType="map">
+        SELECT * FROM (SELECT user_course_relation.status,course_name,course_id,user_id,user_name,user_course_relation.create_time FROM course
+    INNER JOIN user_course_relation on course.uuid=course_id
+    INNER JOIN `user`on user_id=user.uuid) as A
+    WHERE `status`=1 AND user_id=#{user_id} AND course_name=#{course_name}
+    </select>
+    <select id="retrieveCourseDependCoursenameUsername" resultType="map">
+        SELECT * FROM (SELECT course.uuid as course_id,user_name,course_name,course.`status`,course.create_time FROM `user`
+        INNER JOIN course ON create_by=`user`.uuid
+        ) AS a
+        <where>
+            <if test="user_name!= '' and course_name!= ''">
+                status = 1 and user_name=#{user_name} and course_name=#{course_name}
+            </if>
+            <if test="user_name== '' and course_name!= ''">
+                status = 1 and course_name=#{course_name}
+            </if>
+            <if test="user_name!= '' and course_name== ''">
+                status = 1 and user_name=#{user_name}
+            </if>
+            <if test="user_name == '' and course_name == ''">
+                status = 1 and course_name = #{course_name}
+            </if>
+        </where>
+    </select>
+</mapper>

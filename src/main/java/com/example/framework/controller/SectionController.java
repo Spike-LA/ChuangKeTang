@@ -1,8 +1,6 @@
 package com.example.framework.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.framework.mapper.SectionMapper;
-import com.example.framework.pojo.Section;
 import com.example.framework.service.SectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -20,10 +18,7 @@ import java.util.Map;
 public class SectionController {
 
     @Autowired
-    SectionService sectionService;
-//
-//    @Autowired
-//    private SectionMapper sectionMapper;
+    private SectionService sectionService;
 
     @PostMapping("/addSection")
     @ApiOperation("添加章节接口")
@@ -33,84 +28,47 @@ public class SectionController {
             @ApiImplicitParam(name = "create_by", value = "创建人id", dataType = "string"),
     })
     public JSONObject addSection(@RequestBody Map map) {
-
-        JSONObject result = new JSONObject();
-
         String section_name = (String) map.get("section_name");
         String course_id = (String) map.get("course_id");
-        String create_id = (String) map.get("create_by");
+        String create_by = (String) map.get("create_by");
 
-//        Section section = new Section();
-//
-//        section.setSection_name(section_name);
-//        section.setCourse_id(course_id);
-//        section.setCreate_by(create_id);
-//        section.setStatus("1");
-//
-//        int i = sectionService.addSection(section);
-//        if (i==1){
-//            result.put("status", "创建成功");
-//        } else {
-//            result.put("status", "创建失败");
-//        }
-//        return result;
-        int i = sectionService.addSection(section_name,course_id,create_id);
-        if (i==1){
-            result.put("status", "创建成功");
-        } else {
-            result.put("status", "创建失败");
-        }
+        JSONObject result = sectionService.addSectionService(section_name,course_id,create_by);
+
         return result;
     }
-
 
     @PostMapping("/getSection")
     @ApiOperation("查询章节接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "course_id", value = "课程id", dataType = "string"),
     })
-    public JSONObject getSection(@RequestBody Map map){
-        JSONObject result = new JSONObject();
-
+    public JSONObject getSection(@RequestBody Map map) {
         String course_id = (String) map.get("course_id");
-
-        result.put("result", sectionService.getSection(course_id));
-
+        JSONObject result = sectionService.getSectionService(course_id);
         return result;
     }
+
     @PostMapping("/updateSection")
     @ApiOperation("修改章节接口")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "section_id", value = "章节id", dataType = "string"),
             @ApiImplicitParam(name = "section_name", value = "章节名称", dataType = "string"),
-            @ApiImplicitParam(name = "uuid", value = "章节id", dataType = "string"),
     })
     public JSONObject updateSection(@RequestBody Map map) {
-        JSONObject result = new JSONObject();
-
-        String section_name = (String) map.get("section_name");
-        String uuid = (String) map.get("uuid");
-        int i = sectionService.updateSection(uuid,section_name);
-        if (i==1){
-            result.put("status", "更新成功");
-        } else {
-            result.put("status", "更新失败");
-        }
+        String section_id = (String)map.get("section_id");
+        String section_name = (String)map.get("section_name");
+        JSONObject result = sectionService.updateSectionService(section_id,section_name);
         return result;
     }
+
     @PostMapping("/deleteSection")
     @ApiOperation("删除章节接口")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "uuid", value = "章节id", dataType = "string"),
+            @ApiImplicitParam(name = "section_id", value = "章节id", dataType = "string"),
     })
     public JSONObject deleteSection(@RequestBody Map map) {
-        JSONObject result = new JSONObject();
-        String uuid = (String) map.get("uuid");
-        int i = sectionService.deleteSection(uuid);
-        if (i==1){
-            result.put("status", "删除成功");
-        } else {
-            result.put("status", "删除失败");
-        }
+        String section_id = (String)map.get("section_id");
+        JSONObject result = sectionService.deleteSectionService(section_id);
         return result;
     }
 }

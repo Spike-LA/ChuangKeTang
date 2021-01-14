@@ -10,5 +10,6 @@ import java.util.Map;
 
 @Repository
 public interface UserMapper extends BaseMapper<User> {
-    List<Map> testAccount(@Param("account") String account);
+    List<Map> retrieveDependAccount(@Param("account") String account);
+    List<Map> retrieveDependUuid(@Param("uuid") String uuid);
 }

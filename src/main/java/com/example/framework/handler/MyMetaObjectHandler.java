@@ -14,16 +14,18 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
   // 插入时的填充策略
   @Override
   public void insertFill(MetaObject metaObject) {
-    log.info("start insert fill ...");
+    //获取执行插入操作时的uuid值
+    String uuid = (String) getFieldValByName("uuid", metaObject);
     this.setFieldValByName("create_time", new Date(), metaObject);
-    this.setFieldValByName("uuid", UUID.randomUUID().toString().replaceAll("-", ""), metaObject);
+    if (uuid == null) {
+      this.setFieldValByName("uuid", UUID.randomUUID().toString().replaceAll("-", ""), metaObject);
+    }
     // this.setFieldValByName("updated_date", new Date(), metaObject);
   }
 
   // 更新时的填充策略
   @Override
   public void updateFill(MetaObject metaObject) {
-    log.info("start update fill ...");
-    this.setFieldValByName("update_date", new Date(), metaObject);
+    this.setFieldValByName("updated_date", new Date(), metaObject);
   }
 }

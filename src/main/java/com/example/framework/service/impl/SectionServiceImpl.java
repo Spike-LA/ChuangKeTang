@@ -1,5 +1,6 @@
 package com.example.framework.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.framework.mapper.SectionMapper;
@@ -9,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-
 @Service("SectionService")
 public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> implements SectionService {
 
@@ -20,57 +18,66 @@ public class SectionServiceImpl extends ServiceImpl<SectionMapper, Section> impl
 
     @Override
     @Transactional
-    public int addSection(String section_name, String course_id, String create_id){
-
+    public JSONObject addSectionService(String section_name, String course_id, String create_by){
+        JSONObject resultImpl = new JSONObject();
         Section section = new Section();
 
         section.setSection_name(section_name);
         section.setCourse_id(course_id);
-        section.setCreate_by(create_id);
+        section.setCreate_by(create_by);
         section.setStatus("1");
 
         sectionMapper.insert(section);
 
-        return 1;
+        resultImpl.put("execute_result", "添加成功");
+
+        return resultImpl;
     }
 
     @Override
     @Transactional
-    public List<Map> getSection(String course_id){
+    public JSONObject getSectionService(String course_id){
+        JSONObject resultImpl = new JSONObject();
+        sectionMapper.textSection(course_id);
 
-        List<Map> map = sectionMapper.textSection(course_id);
+        resultImpl.put("result",sectionMapper.textSection(course_id));
 
-        return map;
+        return resultImpl;
     }
 
     @Override
     @Transactional
-    public int updateSection(String uuid, String section_name){
-
-        UpdateWrapper<Section> updateWrapper = new UpdateWrapper<>();
-
-        Section section = new Section();
-
+    public JSONObject updateSectionService(String section_id, String section_name){
+        JSONObject resultImpl = new JSONObject();
+        UpdateWrapper<Section> sectionUpdateWrapper = new UpdateWrapper<>();
+        sectionUpdateWrapper.eq("uuid",section_id);
+        Section section = sectionMapper.selectOne(sectionUpdateWrapper);
         section.setSection_name(section_name);
+        int update = sectionMapper.update(section,sectionUpdateWrapper);
+        if (update==1){
+            resultImpl.put("execute_result","修改成功");
+        }else{
+            resultImpl.put("execute_result","修改失败");
+        }
 
-        updateWrapper.eq("uuid",uuid);
-
-        sectionMapper.update(section, updateWrapper);
-
-        return 1;
+        return resultImpl;
     }
+
     @Override
     @Transactional
-    public int deleteSection(String uuid){
-        UpdateWrapper<Section> updateWrapper = new UpdateWrapper<>();
-        Section section = new Section();
-
+    public JSONObject deleteSectionService(String section_id){
+        JSONObject resultImpl = new JSONObject();
+        UpdateWrapper<Section> sectionUpdateWrapper = new UpdateWrapper<>();
+        sectionUpdateWrapper.eq("uuid",section_id);
+        Section section = sectionMapper.selectOne(sectionUpdateWrapper);
         section.setStatus("0");
+        int update = sectionMapper.update(section,sectionUpdateWrapper);
+        if (update==1){
+            resultImpl.put("execute_result","删除成功");
+        }else{
+            resultImpl.put("execute_result","删除失败");
+        }
 
-        updateWrapper.eq("uuid",uuid);
-
-        sectionMapper.update(section, updateWrapper);
-
-        return 1;
+        return resultImpl;
     }
 }

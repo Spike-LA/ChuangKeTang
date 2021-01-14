@@ -11,5 +11,4 @@ import java.util.Map;
 @Repository
 public interface SectionMapper extends BaseMapper<Section> {
     List<Map> textSection(@Param("course_id") String course_id);
-    List<Map> textSection1(@Param("uuid") String uuid);
 }
