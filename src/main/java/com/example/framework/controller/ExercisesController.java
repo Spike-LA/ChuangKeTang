@@ -49,29 +49,12 @@ public class ExercisesController {
         return result;
     }
 
-    @PostMapping("/getExercises")
-    @ApiOperation("查询全部题目接口")
-    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "course_id", value = "课程id", dataType = "string"),
-//            @ApiImplicitParam(name = "section_id", value = "章节id", dataType = "string"),
-//            @ApiImplicitParam(name = "create_time", value = "创建时间", dataType = "string"),
-    })
-    public JSONObject getExercises(){
-
-        JSONObject result = new JSONObject();
-
-//        String course_id = (String) map.get("course_id");
-//        String section_id = (String) map.get("section_id");
-//        String create_time = (String) map.get("create_time");
-
-        result.put("exercises", exercisesService.getExercises());
-
-        return result;
-    }
-
     @PostMapping("/getExercise")
     @ApiOperation("查询题目接口")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "current", value = "当前页数", dataType = "integer"),
+            @ApiImplicitParam(name = "size", value = "每页个数", dataType = "integer"),
+            @ApiImplicitParam(name = "user_id", value = "用户id", dataType = "string"),
             @ApiImplicitParam(name = "course_id", value = "课程id", dataType = "string"),
             @ApiImplicitParam(name = "section_id", value = "章节id", dataType = "string"),
             @ApiImplicitParam(name = "create_time_gt", value = "大创建时间", dataType = "string"),
@@ -81,13 +64,15 @@ public class ExercisesController {
 
         JSONObject result = new JSONObject();
 
+        Integer current = (Integer) map.get("current");
+        Integer size = (Integer) map.get("size");
+        String user_id = (String) map.get("user_id");
         String course_id = (String) map.get("course_id");
         String section_id = (String) map.get("section_id");
         String create_time_gt = (String) map.get("create_time_gt");
         String create_time_lt = (String) map.get("create_time_lt");
 
-        result.put("exercises", exercisesService.getExercise(course_id,section_id,create_time_gt,create_time_lt));
-
+        result.put("exercises", exercisesService.getExercise(current,size,user_id,course_id,section_id,create_time_gt,create_time_lt));
         return result;
     }
 }

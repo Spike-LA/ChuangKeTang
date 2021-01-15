@@ -17,8 +17,5 @@ public interface ExercisesService extends IService<Exercises> {
     int addExercises(String exercise_content, String exercise_type_id, String options, String answer, String section_id, String create_by);
 
     @Transactional
-    List<Map> getExercises();
-
-    @Transactional
-    List<Map> getExercise(String course_id, String section_id, String create_time_gt, String create_time_lt);
+    List<Map> getExercise(Integer current, Integer size, String user_id, String course_id, String section_id, String create_time_gt, String create_time_lt);
 }

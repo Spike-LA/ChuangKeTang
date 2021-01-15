@@ -1,5 +1,9 @@
 package com.example.framework.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.framework.mapper.ExerciseMapper;
 import com.example.framework.pojo.Exercises;
@@ -38,15 +42,27 @@ public class ExercisesServiceImpl extends ServiceImpl<ExerciseMapper, Exercises>
 
     @Override
     @Transactional
-    public List<Map> getExercises(){
-        List<Map> maps = exerciseMapper.textExercises();
-        return maps;
-    }
-
-    @Override
-    @Transactional
-    public List<Map> getExercise(String course_id, String section_id, String create_time_gt, String create_time_lt){
-        List<Map> maps = exerciseMapper.textExercise(course_id,section_id,create_time_gt,create_time_lt);
+    public List<Map> getExercise(Integer current, Integer size, String user_id, String course_id, String section_id, String create_time_gt, String create_time_lt){
+//        List<Map> maps = exerciseMapper.textExercise(user_id,course_id,section_id,create_time_gt,create_time_lt);
+        Page<Map> page = new Page<>(current, size);
+        QueryWrapper<Map> wrapper =new QueryWrapper<>();
+        if (StringUtils.isNotBlank(user_id)){
+            wrapper.eq("exercise.create_by", user_id);
+        }
+        if (StringUtils.isNotBlank(course_id)){
+            wrapper.eq("course_id", course_id);
+        }
+        if (StringUtils.isNotBlank(section_id)){
+            wrapper.eq("section_id", section_id);
+        }
+        if (StringUtils.isNotBlank(create_time_gt)){
+            wrapper.ge("exercise.create_time", create_time_gt);
+        }
+        if (StringUtils.isNotBlank(create_time_lt)){
+            wrapper.le("exercise.create_time", create_time_lt);
+        }
+        exerciseMapper.textExercise1(page,wrapper);
+        List<Map> maps = page.getRecords();//结果
         return maps;
     }
 }

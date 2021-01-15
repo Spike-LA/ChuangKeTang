@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.framework.mapper.ExerciseMapper">
-    <select id="textExercises" resultType="map">
-        SELECT * FROM exercise
-    </select>
     <select id="textExercise" resultType="map">
-        SELECT exercise.create_by, exercise.create_time,exercise.exercise_content,exercise.exercise_type_id FROM
+        SELECT exercise.create_by, exercise.create_time,exercise.exercise_content,type_name FROM
          exercise INNER JOIN section ON section_id=section.uuid INNER JOIN course ON section.course_id=course.uuid
+          INNER JOIN exercises_type ON exercise_type_id=exercises_type.uuid
         <where>
+            <if test="user_id!= null">
+                and exercise.create_by=#{user_id}
+            </if>
             <if test="course_id != null">
                 and course_id=#{course_id}
             </if>
@@ -21,5 +22,10 @@
                 and section_id=#{section_id}
             </if>
         </where>
+    </select>
+    <select id="textExercise1" resultType="map">
+    SELECT exercise.create_by, exercise.create_time,exercise.exercise_content,type_name FROM
+    exercise INNER JOIN section ON section_id=section.uuid INNER JOIN course ON section.course_id=course.uuid
+    INNER JOIN exercises_type ON exercise_type_id=exercises_type.uuid ${ew.customSqlSegment}
     </select>
 </mapper>
